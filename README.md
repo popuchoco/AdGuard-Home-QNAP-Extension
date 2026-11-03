@@ -168,4 +168,4 @@ Bridge 對上游的串接分開處理：
 
 ## License
 
-[MIT](LICENSE)
+[Apache License 2.0](LICENSE)
