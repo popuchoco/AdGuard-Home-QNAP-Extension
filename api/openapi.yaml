@@ -1,0 +1,75 @@
+openapi: 3.0.3
+info:
+  title: AdGuard Home QNAP Extension Bridge API
+  version: 0.1.0
+paths:
+  /extension/api/v1/summary:
+    get:
+      summary: Return cached snapshots for all sources
+      responses:
+        "200":
+          description: Current source snapshots
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Summary"
+  /extension/api/v1/sources/{source}:
+    get:
+      summary: Return one cached source snapshot
+      parameters:
+        - in: path
+          name: source
+          required: true
+          schema:
+            type: string
+            enum: [adguard, qts, qurouter]
+      responses:
+        "200":
+          description: Source snapshot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Snapshot"
+        "404":
+          description: Unknown source
+  /extension/api/v1/refresh/{source}:
+    post:
+      summary: Schedule a bounded source refresh
+      parameters:
+        - in: path
+          name: source
+          required: true
+          schema:
+            type: string
+            enum: [adguard, qts, qurouter]
+      responses:
+        "202": {description: Refresh scheduled or already running}
+        "429": {description: Source cooldown has not elapsed}
+components:
+  schemas:
+    Snapshot:
+      type: object
+      required: [status, observed_at, age_seconds, data]
+      properties:
+        status:
+          type: string
+          enum: [ok, stale, unavailable, busy_active_session, indeterminate]
+        observed_at: {type: string, format: date-time}
+        age_seconds: {type: integer, minimum: 0}
+        data: {type: object, additionalProperties: true}
+        limitations:
+          type: array
+          items: {type: string}
+    Summary:
+      type: object
+      required: [schema_version, generated_at, sources]
+      properties:
+        schema_version: {type: integer, enum: [1]}
+        generated_at: {type: string, format: date-time}
+        sources:
+          type: object
+          required: [adguard, qts, qurouter]
+          properties:
+            adguard: {$ref: "#/components/schemas/Snapshot"}
+            qts: {$ref: "#/components/schemas/Snapshot"}
+            qurouter: {$ref: "#/components/schemas/Snapshot"}

@@ -1,0 +1,39 @@
+listen: "127.0.0.1:8787"
+base_path: "/extension"
+cache:
+  jitter_percent: 10
+  stale_max_age: "30m"
+  max_response_bytes: 1048576
+
+adguard:
+  enabled: true
+  base_url: "http://127.0.0.1:3000"
+  username: "monitor"
+  password_file: "/run/secrets/adguard_password"
+  status_ttl: "15s"
+  stats_ttl: "30s"
+
+qts:
+  enabled: true
+  base_url: "https://nas.example"
+  username: "monitor"
+  password_file: "/run/secrets/qts_password"
+  verify_tls: true
+  system_ttl: "30s"
+  storage_ttl: "5m"
+  raid_ttl: "60s"
+  ssh:
+    enabled: false
+    host: "nas.example"
+    user: "monitor"
+    identity_file: "/run/secrets/qts_ssh_key"
+
+qurouter:
+  enabled: true
+  base_url: "http://router.example/miro/api"
+  username: "monitor"
+  password_file: "/run/secrets/qurouter_password"
+  overview_ttl: "60s"
+  clients_ttl: "5m"
+  events_ttl: "5m"
+  force_login: false
