@@ -6,7 +6,7 @@
 
 ### `GET /extension/api/v1/summary`
 
-一次回傳三個獨立來源的快照：
+一次回傳四個獨立 view；`qurouter` 由 `uptime_kuma` 的 monitor 結果投影：
 
 ```json
 {
@@ -14,15 +14,16 @@
   "generated_at": "2026-11-04T00:00:00Z",
   "sources": {
     "adguard": {"status": "ok", "observed_at": "...", "age_seconds": 5, "data": {}},
+    "uptime_kuma": {"status": "ok", "observed_at": "...", "age_seconds": 15, "data": {}},
     "qts": {"status": "indeterminate", "observed_at": "...", "age_seconds": 20, "data": {}, "limitations": []},
-    "qurouter": {"status": "busy_active_session", "observed_at": "...", "age_seconds": 65, "data": {}}
+    "qurouter": {"status": "ok", "observed_at": "...", "age_seconds": 15, "data": {"source": "uptime_kuma"}}
   }
 }
 ```
 
 ### `GET /extension/api/v1/sources/{source}`
 
-`source` 只能是 `adguard`、`qts`、`qurouter`。不得接受任意 hostname 或 upstream URL。
+`source` 只能是 `adguard`、`uptime_kuma`、`qts`、`qurouter`。其中 `qurouter` 在 v1 是從 Kuma heartbeat 投影的 view，不是直接登入路由器。不得接受任意 hostname 或 upstream URL。
 
 ### `POST /extension/api/v1/refresh/{source}`
 
@@ -37,6 +38,15 @@
 
 使用官方 HTTP API 的 Basic Auth。Bridge 不代理任意 `/control/*` endpoint，也不長期保存 query log 明細。
 
+## Uptime Kuma upstream
+
+| 用途 | Endpoint | 正規化輸出 |
+|---|---|---|
+| Status Page groups | `GET /api/status-page/{slug}` | 網路／NAS／服務與 monitor metadata |
+| recent heartbeat | `GET /api/status-page/heartbeat/{slug}` | UP/DOWN/pending、延遲與最近檢查 |
+
+第一版不使用管理 Socket.IO API，也不修改 monitor；只讀公開於私人 Tailscale 網路的 Status Page API。
+
 ## QTS upstream
 
 | 用途 | Endpoint/Probe | 備註 |
@@ -50,7 +60,7 @@
 
 有 2FA 的帳號需要部署環境提供短期 security code 或改用專用唯讀帳號；Extension 不保存可繞過 2FA 的 token。
 
-## QuRouter upstream
+## QuRouter upstream（未來選用，不屬於 v1）
 
 Base URL 範例：`http://router.example/miro/api`。
 
@@ -64,7 +74,7 @@ Base URL 範例：`http://router.example/miro/api`。
 | events | `GET /v2/eventlogs?limit=50` |
 | logout | `POST /v1/logout` |
 
-Login body 使用 `force=false`。成功後以 `Authorization: Bearer <token>` 查詢；不論成功或失敗都嘗試 logout。若回應表示已有 session 且未提供 token，不再查詢其他 endpoint。
+v1 不呼叫這些 endpoint；它使用 Kuma 的 QHora Ping 與 QuRouter Web monitor。若未來啟用深度模式，Login body 使用 `force=false`。成功後以 `Authorization: Bearer <token>` 查詢；不論成功或失敗都嘗試 logout。若回應表示已有 session 且未提供 token，不再查詢其他 endpoint。
 
 ## Redaction
 

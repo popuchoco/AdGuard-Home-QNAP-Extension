@@ -22,7 +22,7 @@ paths:
           required: true
           schema:
             type: string
-            enum: [adguard, qts, qurouter]
+            enum: [adguard, uptime_kuma, qts, qurouter]
       responses:
         "200":
           description: Source snapshot
@@ -41,7 +41,7 @@ paths:
           required: true
           schema:
             type: string
-            enum: [adguard, qts, qurouter]
+            enum: [adguard, uptime_kuma, qts]
       responses:
         "202": {description: Refresh scheduled or already running}
         "429": {description: Source cooldown has not elapsed}
@@ -68,8 +68,9 @@ components:
         generated_at: {type: string, format: date-time}
         sources:
           type: object
-          required: [adguard, qts, qurouter]
+          required: [adguard, uptime_kuma, qts, qurouter]
           properties:
             adguard: {$ref: "#/components/schemas/Snapshot"}
+            uptime_kuma: {$ref: "#/components/schemas/Snapshot"}
             qts: {$ref: "#/components/schemas/Snapshot"}
             qurouter: {$ref: "#/components/schemas/Snapshot"}

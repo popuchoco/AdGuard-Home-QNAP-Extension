@@ -1,5 +1,8 @@
 listen: "127.0.0.1:8787"
 base_path: "/extension"
+resource_budget:
+  memory_limit_mb: 48
+  default_refresh: "60s"
 cache:
   jitter_percent: 10
   stale_max_age: "30m"
@@ -12,6 +15,12 @@ adguard:
   password_file: "/run/secrets/adguard_password"
   status_ttl: "15s"
   stats_ttl: "30s"
+
+uptime_kuma:
+  enabled: true
+  base_url: "http://uptime-kuma:3001"
+  status_page_slug: "home-network"
+  heartbeat_ttl: "60s"
 
 qts:
   enabled: true
@@ -29,11 +38,7 @@ qts:
     identity_file: "/run/secrets/qts_ssh_key"
 
 qurouter:
-  enabled: true
-  base_url: "http://router.example/miro/api"
-  username: "monitor"
-  password_file: "/run/secrets/qurouter_password"
-  overview_ttl: "60s"
-  clients_ttl: "5m"
-  events_ttl: "5m"
-  force_login: false
+  mode: "uptime_kuma"
+  ping_monitor_name: "QHora Ping"
+  web_monitor_name: "QuRouter Web"
+  management_url: "http://router.example"
