@@ -2,8 +2,6 @@
 
 針對 TS-431K／ARMv7 設計的輕量私人監控網頁。單一 Go 程式內嵌前端與唯讀 API，集中顯示 **AdGuard Home、Uptime Kuma、QTS NAS 與 QuRouter** 狀態；瀏覽器不直接持有任何管理密碼。
 
-> GitHub repository 名稱沿用既有的 `Extention` 拼字；專案與文件內一律稱為 **Extension**。
-
 ## 原始設計來源與實作狀態
 
 這份設計是在 2026-09-16 評估 TS-431K 後提出的。當時希望安裝 Homepage，將 AdGuard Home、Uptime Kuma、QTS 與 QuRouter 集中到私人首頁；但 Homepage 已停止提供 32-bit ARMv7 映像，而 NAS 只有約 1 GB RAM、當時可用記憶體約 285 MB、Swap 已有明顯使用，因此改設計成：
