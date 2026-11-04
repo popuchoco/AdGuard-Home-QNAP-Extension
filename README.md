@@ -13,7 +13,7 @@
 - 不使用資料庫、不掛載 Docker socket。
 - 只綁定 NAS 的 Tailscale interface，避免暴露到 LAN／公網。
 
-後續實際選擇先用既有 Uptime Kuma Status Page 完成「網路／NAS／服務」三組可用性監測，因此完整自製 Dashboard **當時停在已評估、未部署的設計階段**。本 repository 是將該原始網頁擴充設計正式固化，不把它誤寫成已在 NAS 上運行的成品。詳見 [設計沿革](docs/HISTORY.md)。
+後續實際選擇先用既有 Uptime Kuma Status Page 完成「網路／NAS／服務」三組可用性監測，因此完整自製 Dashboard **當時停在已評估、未部署的設計階段**。現在 repository 也收錄了 [09-16 實際成品的安全重建、重建腳本與可直接開啟的預覽](legacy/uptime-kuma-status-page/README.md)，不再只有概念文件，也不把 Kuma 成品誤稱為完整 Go Dashboard。詳見 [設計沿革](docs/HISTORY.md)。
 
 ## 為什麼需要這個 Extension
 
@@ -164,7 +164,7 @@ Bridge 對上游的串接分開處理：
 
 ## 專案狀態
 
-目前 repository 固化的是先前評估完成但未部署的網頁擴充設計、API 邊界與低資源策略，作為後續實作成獨立 ARMv7 Go binary／QPKG 的契約。硬體或韌體新增 parser 前，應先加入已遮蔽的真實 fixture，而不是猜測欄位語義。
+目前 repository 同時包含 2026-09-16 實際部署過的 Kuma Status Page 安全重建，以及尚待實作的低資源 Go Extension 設計契約。硬體或韌體新增 parser 前，應先加入已遮蔽的真實 fixture，而不是猜測欄位語義。
 
 ## License
 

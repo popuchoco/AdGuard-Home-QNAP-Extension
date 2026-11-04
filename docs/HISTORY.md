@@ -32,6 +32,8 @@
 
 Kuma 解決的是可用性監測、歷史、延遲與通知；它無法顯示 AdGuard 的查詢／封鎖統計或 QTS CPU／RAM／Storage 深度資料。完整 Go Dashboard 因此被保留為後續設計，而非當時已部署的服務。
 
+原始工作目錄後來找回當日的 Kuma 設定腳本、資料庫備份及四版前端 bundle；最後一版只在 Kuma 管理選單加入指向 `/status/home-network` 的「詳細」連結。因原檔包含私人位址與明碼憑證，repository 僅保存去識別、環境變數化的重建版本與靜態預覽，不提交資料庫或原始 bundle。任何當時使用過的密碼都應視為已暴露並輪替。
+
 ## 本 repository 的定位
 
 這裡保存的是上述未部署網頁擴充的可實作規格。未來若開始寫程式，v1 必須先忠於原始低耗用邊界；QuRouter clients、events、WAN、ports 等深度 API 應列為選用擴充，不得冒充最初已完成的功能。
